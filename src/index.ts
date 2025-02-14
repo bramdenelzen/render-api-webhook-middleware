@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import fetch from "node-fetch";
+import fetch, { Response as FetchResponse } from "node-fetch";
 
 dotenv.config();
 
@@ -13,7 +13,9 @@ const RENDER_ENDPOINT = process.env.RENDER_ENDPOINT;
 app.post("/redeploy", (req: Request, res: Response) => {
   if (req.headers.authorization === `Bearer ${RENDER_TOKEN}`) {
     if (!RENDER_TOKEN || !RENDER_ENDPOINT) {
-      res.send("Missing RENDER_TOKEN or RENDER_ENDPOINT env variables").status(500);
+      res
+        .send("Missing RENDER_TOKEN or RENDER_ENDPOINT env variables")
+        .status(500);
       return;
     }
 
@@ -26,7 +28,7 @@ app.post("/redeploy", (req: Request, res: Response) => {
       body: JSON.stringify({
         clearCache: "clear",
       }),
-    }).then((response) => {
+    }).then((response: FetchResponse) => {
       console.log(response);
       if (response.ok) {
         res.send("Redeployed");
