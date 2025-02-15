@@ -42,6 +42,10 @@ app.post("/redeploy", (req: Request, res: Response) => {
   }
 });
 
+app.get("/health", (req: Request, res: Response) => {
+  res.send("OK").status(200);
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
